@@ -13,38 +13,37 @@ Key Features
 - Modular Python scripts for automation and reproducibility
 
 ────────────────────────────────────────────────────────────
-
 Directory Structure
 
 Weather_Prediction_Bengaluru/
 │
 ├── .gitignore
-├── .cdsapirc                (for CDS API key)
+├── .cdsapirc                  → For CDS API key (required for ERA5 data)
 ├── README.md
 │
 ├── data/
 │   ├── live/
-│   │   ├── download/        (raw netCDF files)
-│   │   ├── extracted/       (intermediate netCDF)
-│   │   └── merged/          (merged ERA5 .nc files and zip)
-│   └── processed/           (final forecast-ready .csv files and models)
+│   │   ├── download/          → Raw ERA5 netCDF files
+│   │   ├── extracted/         → Intermediate netCDF files
+│   │   └── merged/            → Merged ERA5 .nc files and zipped archives
+│   └── processed/             → Final forecast-ready CSVs and trained models
 │
 ├── scripts/
-│   ├── app.py
-│   ├── train_model.py
-│   ├── preprocess_data.py
-│   ├── real_time_weather_prediction.py
-│   ├── custom_date_weather_prediction.py
-│   ├── historical_weather_prediction.py
-│   ├── future_download_era5_data.py
-│   ├── future_process_era5_data.py
-│   ├── future_predict_weather.py
-│   ├── validate_download_era5.py
-│   ├── validate_process_era5.py
-│   ├── validate_weather_with_api.py
-│   ├── interpolate_and_format_weather.py
-│   ├── historical_plot_results.py
-│   └── real_time_plot_weather_predictions.py
+│   ├── app.py                            → Flask app entry point
+│   ├── train_model.py                    → Model training script
+│   ├── preprocess_data.py                → Data preprocessing pipeline
+│   ├── real_time_weather_prediction.py   → Predict current weather
+│   ├── custom_date_weather_prediction.py → Predict for a custom past date
+│   ├── historical_weather_prediction.py  → Plot or validate historical results
+│   ├── future_download_era5_data.py      → Download future forecast ERA5 data
+│   ├── future_process_era5_data.py       → Process ERA5 future forecast
+│   ├── future_predict_weather.py         → Predict future weather
+│   ├── validate_download_era5.py         → Validate raw downloads
+│   ├── validate_process_era5.py          → Validate processed data
+│   ├── validate_weather_with_api.py      → Compare predictions with API data
+│   ├── interpolate_and_format_weather.py → Data formatting and interpolation
+│   ├── historical_plot_results.py        → Plot training results
+│   └── real_time_plot_weather_predictions.py → Plot real-time forecasts
 │
 ├── logs/
 │   ├── custom_date_prediction.log
@@ -55,19 +54,19 @@ Weather_Prediction_Bengaluru/
 │   └── validation_with_openweathermap.log
 │
 ├── templates/
-│   ├── index.html
-│   ├── info.html
-│   ├── realtime.html
-│   ├── historical.html
-│   └── future.html
+│   ├── index.html             → Homepage
+│   ├── info.html              → Project info/about page
+│   ├── realtime.html          → Real-time weather prediction page
+│   ├── historical.html        → Historical prediction interface
+│   └── future.html            → Future forecast interface
 │
 ├── static/
 │   └── css/
-│       └── styles.css
+│       └── styles.css         → Main frontend stylesheet
 │
 ├── plots/
 │   ├── predicted_vs_actual_plot.png
-│   └── training_loss_plot.png
+│   ├── training_loss_plot.png
 │
 └── Models & Results/
     ├── weather_model.keras
