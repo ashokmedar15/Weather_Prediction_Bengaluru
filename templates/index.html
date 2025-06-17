@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Space Station</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0A1D37, #1E3A8A);
+            color: #E5E7EB;
+            overflow-x: hidden;
+            position: relative;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 29, 55, 0.9);
+            padding: 20px 50px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #FF6B6B;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .nav-links a {
+            color: #E5E7EB;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        .nav-links a:hover {
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4em;
+            color: #B2D4F7;
+            text-shadow: 0 0 10px #B2D4F7, 0 0 20px #B2D4F7;
+            animation: pulse 2s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        .hero p {
+            font-size: 1.4em;
+            color: #9CA3AF;
+            margin-top: 10px;
+        }
+        .control-panel {
+            padding: 100px 40px;
+            text-align: center;
+        }
+        .control-panel h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: #FFFFFF;
+            margin-bottom: 60px;
+            text-shadow: 0 0 5px #B2D4F7;
+        }
+        .control-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(178, 212, 247, 0.3);
+            max-width: 400px;
+            margin: 20px auto;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .control-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+            animation: orbit 10s linear infinite;
+            z-index: -1;
+        }
+        @keyframes orbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .control-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(178, 212, 247, 0.5);
+        }
+        .control-card i {
+            font-size: 3em;
+            color: #FF6B6B;
+            margin-bottom: 20px;
+        }
+        .control-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        .control-card p {
+            color: #9CA3AF;
+            margin-bottom: 20px;
+        }
+        .control-card a {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #FFD700;
+            color: #1F2937;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 0 10px #FFD700;
+            transition: all 0.3s;
+        }
+        .control-card a:hover {
+            background: #FBBF24;
+            box-shadow: 0 0 20px #FBBF24;
+            transform: scale(1.05);
+        }
+        .footer {
+            background: #0A1D37;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230A1D37" fill-opacity="1" d="M0,128L48,133.3C96,139,192,149,288,160C384,171,480,181,576,170.7C672,160,768,128,864,133.3C960,139,1056,181,1152,186.7C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat center/cover;
+            transform: rotate(180deg);
+        }
+        .footer p {
+            color: #9CA3AF;
+        }
+        .footer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .hero p { font-size: 1.1em; }
+            .control-card { max-width: 100%; margin: 10px 0; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('index') }}">WeatherSpace</a>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('historical') }}">Historical</a>
+            <a href="{{ url_for('realtime') }}">Real-Time</a>
+            <a href="{{ url_for('future') }}">Future</a>
+        </div>
+    </nav>
+
+    <div id="particles-js"></div>
+
+    <section class="hero">
+        <h1>Weather Space Station</h1>
+        <p>Commanding AI-Powered Weather Forecasts from Orbit</p>
+    </section>
+
+    <section class="control-panel">
+        <h2>Control Center</h2>
+        <div class="control-card">
+            <i class="fas fa-info-circle"></i>
+            <h3>Project Overview</h3>
+            <p>Explore our LSTM-based weather prediction system, designed for ISRO/DOS precision.</p>
+            <a href="{{ url_for('info') }}">Enter Station</a>
+        </div>
+        <div class="control-card">
+            <i class="fas fa-history"></i>
+            <h3>Historical Data</h3>
+            <p>Access past weather logs from our orbital archive.</p>
+            <a href="{{ url_for('historical') }}">Access Logs</a>
+        </div>
+        <div class="control-card">
+            <i class="fas fa-cloud-sun"></i>
+            <h3>Real-Time Monitoring</h3>
+            <p>Live weather updates from the cosmos.</p>
+            <a href="{{ url_for('realtime') }}">Monitor Now</a>
+        </div>
+        <div class="control-card">
+            <i class="fas fa-forward"></i>
+            <h3>Future Predictions</h3>
+            <p>Forecast weather conditions from space.</p>
+            <a href="{{ url_for('future') }}">Predict Future</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2025 WeatherSpace | Powered by xAI | <a href="mailto:support@xai.com">Contact Command</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#B2D4F7' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: false },
+                move: { enable: true, speed: 2, direction: 'none', random: true }
+            },
+            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' } } }
+        });
+    </script>
+</body>
+</html>
