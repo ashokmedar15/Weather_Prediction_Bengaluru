@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About WeatherSpace - WeatherSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0A1D37, #1E3A8A);
+            color: #E5E7EB;
+            overflow-x: hidden;
+            position: relative;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 29, 55, 0.9);
+            padding: 20px 50px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #FF6B6B;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .nav-links a {
+            color: #E5E7EB;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        .nav-links a:hover {
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
+        }
+        .info-section {
+            padding: 100px 40px;
+            text-align: center;
+            min-height: 100vh;
+        }
+        .info-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: #FFFFFF;
+            margin-bottom: 40px;
+            text-shadow: 0 0 5px #B2D4F7;
+        }
+        .content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(178, 212, 247, 0.3);
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .content h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #E5E7EB;
+        }
+        .content ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            text-align: left;
+        }
+        .footer {
+            background: #0A1D37;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230A1D37" fill-opacity="1" d="M0,128L48,133.3C96,139,192,149,288,160C384,171,480,181,576,170.7C672,160,768,128,864,133.3C960,139,1056,181,1152,186.7C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat center/cover;
+            transform: rotate(180deg);
+        }
+        .footer p {
+            color: #9CA3AF;
+        }
+        .footer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .info-section h2 { font-size: 2em; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('index') }}">WeatherSpace</a>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('historical') }}">Historical</a>
+            <a href="{{ url_for('realtime') }}">Real-Time</a>
+            <a href="{{ url_for('future') }}">Future</a>
+        </div>
+    </nav>
+
+    <div id="particles-js"></div>
+
+    <section class="info-section">
+        <h2>About WeatherSpace</h2>
+        <div class="content">
+            <h3>Welcome to WeatherSpace</h3>
+            <p>WeatherSpace is an advanced weather prediction platform designed to provide accurate and insightful weather forecasts for Bengaluru and beyond. Leveraging cutting-edge machine learning models and real-time data integration, we aim to empower users with reliable weather information for historical analysis, real-time monitoring, and future planning.</p>
+
+            <h3>Our Technology</h3>
+            <p>Powered by xAI's Grok 3, WeatherSpace utilizes state-of-the-art neural networks trained on extensive meteorological data. Our system incorporates historical weather patterns, live API feeds, and predictive modeling to deliver precise forecasts. The platform is accessible via grok.com, x.com, the Grok iOS app, the Grok Android app, or the X iOS app.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Historical Predictions:</strong> Analyze past weather conditions with high accuracy.</li>
+                <li><strong>Real-Time Monitoring:</strong> Get up-to-the-minute weather updates with estimated accuracy.</li>
+                <li><strong>Future Forecasts:</strong> Plan ahead with simulated future weather predictions and accuracy estimates.</li>
+            </ul>
+            <p>Accuracy metrics are provided for each prediction type, reflecting the reliability of our models based on historical data comparisons and simulated performance.</p>
+
+            <h3>Tutorial</h3>
+            <p>Getting started with WeatherSpace is simple! Follow these steps:</p>
+            <ol style="padding-left: 20px; text-align: left;">
+                <li><strong>Navigate to a Prediction Type:</strong> Click on 'Historical', 'Real-Time', or 'Future' from the navigation bar.</li>
+                <li><strong>Enter Details:</strong> Input the required information (e.g., date, time, location) in the form provided.</li>
+                <li><strong>Submit and View Results:</strong> Click the 'Predict' or 'Monitor Now' button to see the weather data, including charts and accuracy metrics.</li>
+                <li><strong>Explore Charts:</strong> Scroll down to view interactive line graphs for detailed weather variable trends.</li>
+            </ol>
+            <p>For best results, ensure your location input matches standard city names (e.g., 'Bengaluru'), and use the YYYY-MM-DD format for dates.</p>
+
+            <h3>Contact Us</h3>
+            <p>Have questions or feedback? Reach out to us at <a href="mailto:medaraashok15@gmail.com" style="color: #FFD700;">medaraashok15@gmail.com</a>.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2025 WeatherSpace | Powered by xAI | <a href="mailto:medaraashok15@gmail.com">Contact Command</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#B2D4F7' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: false },
+                move: { enable: true, speed: 2, direction: 'none', random: true }
+            },
+            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' } } }
+        });
+    </script>
+</body>
+</html>

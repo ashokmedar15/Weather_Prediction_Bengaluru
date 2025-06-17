@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Weather Prediction - WeatherSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0A1D37, #1E3A8A);
+            color: #E5E7EB;
+            overflow-x: hidden;
+            position: relative;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 29, 55, 0.9);
+            padding: 20px 50px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #FF6B6B;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .nav-links a {
+            color: #E5E7EB;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        .nav-links a:hover {
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
+        }
+        .prediction-section {
+            padding: 100px 40px;
+            text-align: center;
+            min-height: 100vh;
+        }
+        .prediction-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: #FFFFFF;
+            margin-bottom: 40px;
+            text-shadow: 0 0 5px #B2D4F7;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(178, 212, 247, 0.3);
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #E5E7EB;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #B2D4F7;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #E5E7EB;
+        }
+        .form-container button {
+            background: #FFD700;
+            color: #1F2937;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .form-container button:hover {
+            background: #FBBF24;
+            box-shadow: 0 0 20px #FBBF24;
+        }
+        .results {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(178, 212, 247, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .results h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+        }
+        .results ul {
+            list-style: none;
+            padding: 0;
+        }
+        .results li {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #E5E7EB;
+        }
+        .error {
+            color: #FF6B6B;
+            margin-bottom: 20px;
+        }
+        .charts-container {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        .chart-container {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(178, 212, 247, 0.3);
+            margin-bottom: 20px;
+        }
+        .footer {
+            background: #0A1D37;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230A1D37" fill-opacity="1" d="M0,128L48,133.3C96,139,192,149,288,160C384,171,480,181,576,170.7C672,160,768,128,864,133.3C960,139,1056,181,1152,186.7C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat center/cover;
+            transform: rotate(180deg);
+        }
+        .footer p {
+            color: #9CA3AF;
+        }
+        .footer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .prediction-section h2 { font-size: 2em; }
+            .form-container { padding: 20px; }
+            .results { padding: 20px; }
+            .chart-container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('index') }}">WeatherSpace</a>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('historical') }}">Historical</a>
+            <a href="{{ url_for('realtime') }}">Real-Time</a>
+            <a href="{{ url_for('future') }}">Future</a>
+        </div>
+    </nav>
+
+    <div id="particles-js"></div>
+
+    <section class="prediction-section">
+        <h2>Historical Weather Prediction</h2>
+        <div class="form-container">
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <form method="POST" action="{{ url_for('historical') }}">
+                <label for="date">Date (YYYY-MM-DD):</label>
+                <input type="text" id="date" name="date" placeholder="e.g., 2025-04-16" required>
+                <label for="time">Time (HH:MM, 24-hour format):</label>
+                <input type="text" id="time" name="time" placeholder="e.g., 15:01" required>
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" placeholder="e.g., Bengaluru" required>
+                <button type="submit">Predict</button>
+            </form>
+        </div>
+
+        {% if historical %}
+        <div class="results">
+            <h3>Historical Prediction Results</h3>
+            <p><strong>Date:</strong> {{ request.form['date'] }} {{ request.form['time'] }}</p>
+            <p><strong>Location:</strong> {{ request.form['location'] }}</p>
+            <ul>
+                {% for key, value in historical.items() %}
+                    <li>{{ key | replace('predicted_', '') | replace('_', ' ') | title }}: {{ value }}</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Accuracy:</strong> {{ historical_accuracy | round(2) }}%</p>
+        </div>
+
+        <!-- Line Charts for Historical Data -->
+        <div class="charts-container">
+            <!-- Temperature (t2m) -->
+            <div class="chart-container">
+                <canvas id="t2mChart"></canvas>
+            </div>
+            <!-- Surface Pressure (sp) -->
+            <div class="chart-container">
+                <canvas id="spChart"></canvas>
+            </div>
+            <!-- High Cloud Cover (hcc) -->
+            <div class="chart-container">
+                <canvas id="hccChart"></canvas>
+            </div>
+            <!-- Low Cloud Cover (lcc) -->
+            <div class="chart-container">
+                <canvas id="lccChart"></canvas>
+            </div>
+            <!-- Medium Cloud Cover (mcc) -->
+            <div class="chart-container">
+                <canvas id="mccChart"></canvas>
+            </div>
+            <!-- Total Cloud Cover (tcc) -->
+            <div class="chart-container">
+                <canvas id="tccChart"></canvas>
+            </div>
+            <!-- Total Column Rain Water (tcrw) -->
+            <div class="chart-container">
+                <canvas id="tcrwChart"></canvas>
+            </div>
+            <!-- Soil Temperature Level 1 (stl1) -->
+            <div class="chart-container">
+                <canvas id="stl1Chart"></canvas>
+            </div>
+            <!-- Soil Temperature Level 2 (stl2) -->
+            <div class="chart-container">
+                <canvas id="stl2Chart"></canvas>
+            </div>
+            <!-- Total Precipitation (tp) -->
+            <div class="chart-container">
+                <canvas id="tpChart"></canvas>
+            </div>
+            <!-- Dew Point Temperature (d2m) -->
+            <div class="chart-container">
+                <canvas id="d2mChart"></canvas>
+            </div>
+            <!-- Surface Solar Radiation Downwards (ssrd) -->
+            <div class="chart-container">
+                <canvas id="ssrdChart"></canvas>
+            </div>
+            <!-- Surface Thermal Radiation Downwards (strd) -->
+            <div class="chart-container">
+                <canvas id="strdChart"></canvas>
+            </div>
+        </div>
+
+        <script>
+            const variables = [
+                { id: 't2mChart', label: 'Temperature (°C)', data: {{ plot_data.t2m | tojson }}, color: 'rgba(255, 215, 0, 1)' },
+                { id: 'spChart', label: 'Surface Pressure (hPa)', data: {{ plot_data.sp | tojson }}, color: 'rgba(178, 212, 247, 1)' },
+                { id: 'hccChart', label: 'High Cloud Cover', data: {{ plot_data.hcc | tojson }}, color: 'rgba(0, 191, 255, 1)' },
+                { id: 'lccChart', label: 'Low Cloud Cover', data: {{ plot_data.lcc | tojson }}, color: 'rgba(0, 191, 255, 0.8)' },
+                { id: 'mccChart', label: 'Medium Cloud Cover', data: {{ plot_data.mcc | tojson }}, color: 'rgba(0, 191, 255, 0.6)' },
+                { id: 'tccChart', label: 'Total Cloud Cover', data: {{ plot_data.tcc | tojson }}, color: 'rgba(0, 191, 255, 0.4)' },
+                { id: 'tcrwChart', label: 'Total Column Rain Water (kg/m²)', data: {{ plot_data.tcrw | tojson }}, color: 'rgba(0, 255, 127, 1)' },
+                { id: 'stl1Chart', label: 'Soil Temperature Level 1 (°C)', data: {{ plot_data.stl1 | tojson }}, color: 'rgba(255, 99, 71, 1)' },
+                { id: 'stl2Chart', label: 'Soil Temperature Level 2 (°C)', data: {{ plot_data.stl2 | tojson }}, color: 'rgba(255, 99, 71, 0.8)' },
+                { id: 'tpChart', label: 'Total Precipitation (mm)', data: {{ plot_data.tp | tojson }}, color: 'rgba(30, 144, 255, 1)' },
+                { id: 'd2mChart', label: 'Dew Point Temperature (°C)', data: {{ plot_data.d2m | tojson }}, color: 'rgba(255, 165, 0, 1)' },
+                { id: 'ssrdChart', label: 'Surface Solar Radiation (MJ/m²)', data: {{ plot_data.ssrd | tojson }}, color: 'rgba(255, 215, 0, 0.8)' },
+                { id: 'strdChart', label: 'Surface Thermal Radiation (MJ/m²)', data: {{ plot_data.strd | tojson }}, color: 'rgba(255, 215, 0, 0.6)' }
+            ];
+
+            variables.forEach(variable => {
+                const ctx = document.getElementById(variable.id).getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: {{ plot_data.times | tojson }},
+                        datasets: [{
+                            label: variable.label,
+                            data: variable.data,
+                            borderColor: variable.color,
+                            backgroundColor: variable.color.replace('1)', '0.2)'),
+                            fill: false,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Value',
+                                    color: '#E5E7EB'
+                                },
+                                ticks: {
+                                    color: '#E5E7EB'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date and Time',
+                                    color: '#E5E7EB'
+                                },
+                                ticks: {
+                                    color: '#E5E7EB'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#E5E7EB'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+        {% endif %}
+    </section>
+
+    <footer class="footer">
+        <p>© 2025 WeatherSpace | Powered by xAI | <a href="mailto:support@xai.com">Contact Command</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#B2D4F7' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: false },
+                move: { enable: true, speed: 2, direction: 'none', random: true }
+            },
+            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' } } }
+        });
+    </script>
+</body>
+</html>

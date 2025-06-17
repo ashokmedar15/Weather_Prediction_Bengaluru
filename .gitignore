@@ -1,0 +1,27 @@
+# Data and model files
+data/processed/*.csv
+data/processed/*.keras
+data/processed/*.pkl
+
+# Virtual environment (ensure all variations are covered)
+venv/
+.venv/
+env/
+
+# PyCharm and IDE files
+.idea/
+
+# Python and temporary files
+__pycache__/
+*.pyc
+*.log
+
+# Sensitive or large files
+*.env  # For API keys or environment variables
+*.zip
+*.tar.gz
+*.dll  # Exclude DLL files (like libclang.dll)
+*.pyd  # Exclude PYD files (like _pywrap_tensorflow_internal.pyd)
+
+# Additional exclusions for large dependency files
+.venv/Lib/site-packages/*
